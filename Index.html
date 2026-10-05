@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VisElektric – instalacje elektryczne domowe</title>
+<meta name="description" content="Instalacje elektryczne w domach i mieszkaniach. Cennik, realizacje i kalkulator materiałów.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1f4; --panel:#ffffff; --ink:#14202b; --muted:#566574; --line:#cfd7de;
+  --blue:#1f5fbf; --yellow:#f2c300; --green:#2e8b57;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#10171e;--panel:#18212a;--ink:#e8edf1;--muted:#9aa9b6;--line:#2b3946;--blue:#6aa3ff;color-scheme:dark}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;line-height:1.55;font-size:17px}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.logo{font-weight:800;font-stretch:110%;font-size:1.25rem;text-decoration:none;color:var(--ink);letter-spacing:-.01em}
+.logo span{color:var(--blue)}
+nav{display:flex;gap:16px;flex-wrap:wrap;font-size:.95rem;font-weight:600}
+nav a{color:var(--ink);text-decoration:none}
+nav a:hover{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:3px;text-underline-offset:5px}
+.wires{height:8px;background:linear-gradient(90deg,#7a4a2a 0 33.3%,var(--blue) 33.3% 66.6%,var(--yellow) 66.6% 83%,var(--green) 83%)}
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+h1,h2,h3{line-height:1.1;margin:0 0 .5em;letter-spacing:-.02em}
+h1{font-size:clamp(2.2rem,6vw,3.8rem);font-weight:800;font-stretch:112%;max-width:15ch}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:750;font-stretch:105%}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0 0 1em;max-width:62ch}
+.lead{font-size:1.2rem;color:var(--muted)}
+.btn{display:inline-block;background:var(--ink);color:var(--bg);padding:13px 22px;border-radius:6px;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.alt{background:var(--yellow);color:#14202b}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px}
+.box .ph{height:120px;border-radius:5px;background:repeating-linear-gradient(45deg,var(--line) 0 8px,transparent 8px 16px);margin-bottom:12px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+td,th{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
+td:last-child,th:last-child{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+.calc{display:grid;gap:24px;grid-template-columns:1fr}
+@media(min-width:860px){.calc{grid-template-columns:1fr 1.1fr}}
+.fields{display:grid;gap:14px}
+.f{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.f label{font-weight:600}
+.f small{display:block;font-weight:400;color:var(--muted);font-size:.82rem}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:38px;height:38px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.2rem;cursor:pointer}
+.stepper input{width:54px;height:38px;text-align:center;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);font:inherit}
+.chk{justify-content:flex-start}
+.chk input{width:22px;height:22px;accent-color:var(--blue)}
+.result{background:var(--panel);border:2px solid var(--ink);border-radius:8px;padding:20px;position:sticky;top:76px;align-self:start}
+.total{font-size:2.2rem;font-weight:800;font-stretch:110%;font-variant-numeric:tabular-nums}
+.grp{font-weight:750;margin:10px 0 -4px}
+.dev{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:10px}
+.dev .row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.dev label.s{font-size:.8rem;color:var(--muted);display:grid;gap:3px}
+.dev input[type=number],.dev select,.dev input[type=text]{height:38px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);font:inherit;padding:0 8px;width:84px}
+.dev input[type=text]{width:100%}
+.dev .res{font-size:.85rem;color:var(--muted)}
+.link{background:none;border:0;color:var(--blue);font:inherit;font-weight:600;cursor:pointer;padding:6px 0;text-align:left}
+select.big{height:40px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);font:inherit;padding:0 8px}
+.note{font-size:.88rem;color:var(--muted)}
+.tag{display:inline-block;background:var(--yellow);color:#14202b;font-weight:700;font-size:.8rem;padding:2px 8px;border-radius:4px}
+footer{padding:32px 0;color:var(--muted);font-size:.9rem}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">Vis<span>Elektric</span></a>
+    <nav aria-label="Menu">
+      <a href="#o-firmie">O firmie</a><a href="#realizacje">Realizacje</a><a href="#cennik">Cennik</a><a href="kalkulator.html">Kalkulator</a><a href="#termin">Terminy</a><a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+  <div class="wires" aria-hidden="true"></div>
+</header>
+
+<main id="top">
+<section>
+  <div class="wrap">
+    <h1>Instalacje elektryczne w twoim domu.</h1>
+    <p class="lead">Nowe instalacje, przeróbki i wymiana rozdzielnic w domach i mieszkaniach. Sprawdź orientacyjny koszt w kalkulatorze i wybierz wolny termin.</p>
+    <div class="btns">
+      <a class="btn alt" href="kalkulator.html">Policz koszt instalacji</a>
+      <a class="btn" href="#kontakt">Zadzwoń lub napisz</a>
+    </div>
+  </div>
+</section>
+
+<section id="o-firmie">
+  <div class="wrap">
+    <h2>O firmie</h2>
+    <p>VisElektric zajmuje się domową elektryką: od jednego gniazdka po kompletną instalację w nowym domu. <em>[Tu wpisz kilka zdań o sobie: ile lat doświadczenia, uprawnienia SEP, obszar działania.]</em></p>
+    <div class="grid">
+      <div class="box"><h3>Nowe instalacje</h3><p class="note">Domy, mieszkania, remonty od zera.</p></div>
+      <div class="box"><h3>Rozdzielnice</h3><p class="note">Wymiana, rozbudowa, zabezpieczenia.</p></div>
+      <div class="box"><h3>Pomiary i odbiory</h3><p class="note">Protokoły pomiarów instalacji.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="realizacje">
+  <div class="wrap">
+    <h2>Realizacje</h2>
+    <div class="grid">
+      <div class="box"><div class="ph" role="img" aria-label="Miejsce na zdjęcie"></div><h3>Dom jednorodzinny</h3><p class="note">Opis realizacji i zdjęcie.</p></div>
+      <div class="box"><div class="ph" role="img" aria-label="Miejsce na zdjęcie"></div><h3>Mieszkanie w bloku</h3><p class="note">Opis realizacji i zdjęcie.</p></div>
+      <div class="box"><div class="ph" role="img" aria-label="Miejsce na zdjęcie"></div><h3>Piwnica / garaż</h3><p class="note">Opis realizacji i zdjęcie.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cennik">
+  <div class="wrap">
+    <h2>Cennik</h2>
+    <p class="note"><span class="tag">PRZYKŁADOWE CENY</span> Zmień je w pliku, w sekcji CENNIK na dole strony.</p>
+    <div class="tw"><table><thead><tr><th>Usługa</th><th>Cena (zł)</th></tr></thead><tbody id="price-table"></tbody></table></div>
+  </div>
+</section>
+
+<section id="termin">
+  <div class="wrap">
+    <h2>Wolne terminy</h2>
+    <p>Wkrótce: kalendarz z wolnymi terminami, konta klientów i rezerwacja online. Na razie zadzwoń lub napisz.</p>
+  </div>
+</section>
+
+<section id="kontakt" style="border-bottom:0">
+  <div class="wrap">
+    <h2>Kontakt</h2>
+    <p>Telefon: <strong>000 000 000</strong><br>E-mail: <strong>kontakt@viselektric.pl</strong><br>Obszar działania: Słupsk i okolice <em>[popraw]</em></p>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">© <span id="yr"></span> VisElektric</div></footer>
+
+<script>
+const CENNIK = [
+  ["Gniazdko",40],["Włącznik",40],["Gniazdko TV",45],["Gniazdko Ethernet",45],
+  ["Reflektor",50],["Żyrandol pojedynczy",50],["Żyrandol podwójny",60],["Żyrandol potrójny",70],
+  ["Kamera",80],["Kamera 360",100],["Kamera obrotowa",120],["Konfiguracja monitoringu",200],
+  ["Skrzynka – 1 szyna",150],["Skrzynka – 2 szyny",200],["Skrzynka – 3 szyny",250]
+];
+document.getElementById("price-table").innerHTML=CENNIK.map(r=>`<tr><td>${r[0]}</td><td>${r[1]} zł</td></tr>`).join("");
+document.getElementById("yr").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
